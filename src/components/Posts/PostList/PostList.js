@@ -5,7 +5,7 @@ const postList = ({posts}) => {
 
     return (
         <div className="post-list section">
-            {posts && posts.map(post => {
+            {posts && posts.map(post => { // prevents error when no posts
                 return (
                     <PostSummary post={post} key={post.id}/>
                 )
