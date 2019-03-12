@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
+import { reduxFirestore, getFirestore } from 'redux-firestore';
+import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
+import fire from './config/fire'
 import thunk from 'redux-thunk'
 import './index.scss';
 import App from './App';
@@ -9,7 +12,12 @@ import * as serviceWorker from './serviceWorker';
 
 import rootReducer from './store/reducers/root/rootReducer';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, compose(
+        applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})),
+        reduxFirestore(fire),
+        reactReduxFirebase(fire)
+        )
+    );
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 
